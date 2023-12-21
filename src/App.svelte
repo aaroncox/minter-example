@@ -247,6 +247,13 @@
         <h1>RAMS Minter</h1>
         <h1>A better minter for ramseos.io</h1>
     </hgroup>
+    <p>
+        <strong>Disclaimer</strong>: This app is not an endorsement of the inscription event or of
+        ramseos.io. This app was built to serve as an example of how to build a more modern EOS
+        application that can allow the same functionality without requiring users to paste a private
+        key in their browsers using the <a href="https://wharfkit.com">Wharf SDKs</a>.
+    </p>
+    <p>Use this app to create inscriptions at your own risk.</p>
 </header>
 
 <main>
