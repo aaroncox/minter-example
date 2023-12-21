@@ -334,8 +334,9 @@
         <article>
             <h2>Session Key</h2>
             {#if $sessionKey}
-                <h3>Active</h3>
+                <h3>Enabled</h3>
                 <p>Session Key: {$sessionKey.toPublic()}</p>
+                <p>If your session key is not working, remove it and re-add it.</p>
             {:else}
                 <p>
                     To automatically mint without needing to approve in your wallet you can create a
