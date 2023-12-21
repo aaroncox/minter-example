@@ -329,7 +329,6 @@
             {#if $sessionKey}
                 <h3>Active</h3>
                 <p>Session Key: {$sessionKey.toPublic()}</p>
-                <button on:click={removePermission}>Remove Session Key</button>
             {:else}
                 <p>
                     To automatically mint without needing to approve in your wallet you can create a
@@ -343,6 +342,7 @@
                 </p>
                 <button on:click={requestPermission}>Create Session Key</button>
             {/if}
+            <button on:click={removePermission}>Remove Session Key</button>
         </article>
     {:else}
         <button on:click={login}>Login</button>
