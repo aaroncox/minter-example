@@ -1,0 +1,33 @@
+{
+    "name": "minter",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "check": "svelte-check --tsconfig ./tsconfig.json"
+    },
+    "devDependencies": {
+        "@sveltejs/vite-plugin-svelte": "^2.4.2",
+        "@tsconfig/svelte": "^5.0.0",
+        "svelte": "^4.0.5",
+        "svelte-check": "^3.4.6",
+        "tslib": "^2.6.0",
+        "typescript": "^5.0.2",
+        "vite": "^4.4.5"
+    },
+    "dependencies": {
+        "@wharfkit/account": "^1.0.0",
+        "@wharfkit/contract": "^1.1.1",
+        "@wharfkit/session": "^1.2.1",
+        "@wharfkit/transact-plugin-resource-provider": "^1.1.0",
+        "@wharfkit/wallet-plugin-anchor": "^1.1.0",
+        "@wharfkit/wallet-plugin-privatekey": "^1.1.0",
+        "@wharfkit/wallet-plugin-scatter": "^1.1.0",
+        "@wharfkit/wallet-plugin-tokenpocket": "^1.1.0",
+        "@wharfkit/wallet-plugin-wombat": "^1.1.0",
+        "@wharfkit/web-renderer": "^1.1.2"
+    }
+}
