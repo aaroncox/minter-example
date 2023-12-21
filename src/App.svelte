@@ -56,6 +56,35 @@
 
     setTimeout(fetchAccount, 5000)
     setInterval(autoMint, 1000)
+    setInterval(loadMints, 3000)
+
+    async function loadMints() {
+        if ($session) {
+            const accountMints = await $session.client.v1.chain.get_table_rows({
+                json: true,
+                limit: 1,
+                code: mintContract,
+                scope: mintContract,
+                table: 'users',
+                lower_bound: $session.actor,
+                upper_bound: $session.actor,
+            })
+            if (accountMints && accountMints.rows && accountMints.rows[0]) {
+                balance.set(accountMints.rows[0].mintcount)
+            }
+            const totalMints = await $session.client.v1.chain.get_table_rows({
+                json: true,
+                limit: 1,
+                code: mintContract,
+                scope: mintContract,
+                table: 'mints',
+                reverse: true,
+            })
+            if (totalMints && totalMints.rows && totalMints.rows[0]) {
+                current.set(totalMints.rows[0].id)
+            }
+        }
+    }
 
     async function buyram() {
         if ($account && $session) {
