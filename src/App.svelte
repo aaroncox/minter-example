@@ -167,6 +167,7 @@
             } catch (e) {
                 lastMintError.set(String(e))
             }
+            balance.update((b) => b + 1)
             lastMintError.set('')
             if (result && result.response) {
                 lastMintId.set(result.response.transaction_id)
