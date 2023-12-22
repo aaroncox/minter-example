@@ -17,17 +17,12 @@
         [session, sessionKey],
         ([$session, $key]) => {
             if ($session && $key) {
-                return new Session(
-                    {
-                        actor: $session.actor,
-                        permission: mintContract,
-                        chain: $session.chain,
-                        walletPlugin: new WalletPluginPrivateKey($key),
-                    },
-                    {
-                        transactPlugins: $session.transactPlugins,
-                    }
-                )
+                return new Session({
+                    actor: $session.actor,
+                    permission: mintContract,
+                    chain: $session.chain,
+                    walletPlugin: new WalletPluginPrivateKey($key),
+                })
             }
             return null
         }
