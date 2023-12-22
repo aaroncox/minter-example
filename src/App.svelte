@@ -264,61 +264,71 @@
     {#if $session}
         <article>
             <div class="grid">
-                <div>
-                    <hgroup>
-                        <h2>{$balance}</h2>
-                        <h5>Your EIRC20</h5>
-                    </hgroup>
+                <div class="center padded">
+                    <div>
+                        <hgroup>
+                            <h1>{$balance}</h1>
+                            <h5>Your EIRC20</h5>
+                        </hgroup>
+                    </div>
+                    <div>
+                        <progress value={$percent} max="100"></progress>
+                        <hgroup class="center">
+                            <h5>{$percent}%</h5>
+                            <h6>Distribution Completed</h6>
+                        </hgroup>
+                    </div>
                 </div>
+
                 <div>
-                    <hgroup>
-                        <h2>{$percent}%</h2>
-                        <h5>Distributed</h5>
-                    </hgroup>
+                    <p>
+                        Mint EIRC20 using the controls below. Each mint transaction will consume CPU
+                        and RAM to perform 10x mint actions.
+                    </p>
+
+                    {#if mintContract}
+                        {#if $minting}
+                            <button class="outline" on:click={stopmint}>Stop Minting</button>
+                        {:else}
+                            <button on:click={mint}>Mint</button>
+                            {#if $sessionKey}
+                                <button on:click={startmint}>Automatically Mint</button>
+                            {:else}
+                                <button disabled>Automatically Mint (Disabled)</button>
+                                <p>
+                                    To enable the automatic mint feature, read the bottom of the
+                                    page and create a Session Key for minting.
+                                </p>
+                            {/if}
+                        {/if}
+                        <div>
+                            <hgroup>
+                                <h6>
+                                    {#if $lastMintTime}
+                                        Successfully minted @ {$lastMintTime}
+                                    {/if}
+                                </h6>
+                                <h6>
+                                    {#if $lastMintId}
+                                        {$lastMintId}
+                                    {/if}
+                                </h6>
+                            </hgroup>
+                        </div>
+                    {:else}
+                        <hgroup>
+                            <h3>Disabled</h3>
+                            <p>Awaiting contract release</p>
+                        </hgroup>
+
+                        <button disabled>Mint</button>
+                        <button disabled>Automatically Mint</button>
+                    {/if}
                 </div>
             </div>
             <footer>
+                <p>Rent additional CPU or purchase additional RAM.</p>
                 <div class="grid">
-                    <div>
-                        {#if mintContract}
-                            {#if $minting}
-                                <button class="outline" on:click={stopmint}>Stop Minting</button>
-                            {:else}
-                                <button on:click={mint}>Mint</button>
-                                {#if $sessionKey}
-                                    <button on:click={startmint}>Automatically Mint</button>
-                                {:else}
-                                    <button disabled>Automatically Mint (Disabled)</button>
-                                    <p>
-                                        To enable the automatic mint feature, see below on how to
-                                        create a Session Key.
-                                    </p>
-                                {/if}
-                            {/if}
-                            <div>
-                                <hgroup>
-                                    <h6>
-                                        {#if $lastMintTime}
-                                            Successfully minted @ {$lastMintTime}
-                                        {/if}
-                                    </h6>
-                                    <h6>
-                                        {#if $lastMintId}
-                                            {$lastMintId}
-                                        {/if}
-                                    </h6>
-                                </hgroup>
-                            </div>
-                        {:else}
-                            <hgroup>
-                                <h3>Disabled</h3>
-                                <p>Awaiting contract release</p>
-                            </hgroup>
-
-                            <button disabled>Mint</button>
-                            <button disabled>Automatically Mint</button>
-                        {/if}
-                    </div>
                     <div>
                         <div class="grid">
                             <div>
@@ -340,7 +350,7 @@
                                     </hgroup>
                                 </div>
                                 <div>
-                                    <button class="outline" on:click={powerup}>Powerup</button>
+                                    <button class="outline" on:click={powerup}>Powerup 10ms</button>
                                 </div>
                             </div>
                             <div class="grid">
@@ -351,7 +361,9 @@
                                     </hgroup>
                                 </div>
                                 <div>
-                                    <button class="outline" on:click={buyram}>Buy RAM</button>
+                                    <button class="outline" on:click={buyram}
+                                        >Buy 1 EOS worth of RAM</button
+                                    >
                                 </div>
                             </div>
                         {/if}
@@ -386,4 +398,13 @@
 </main>
 
 <style>
+    .center {
+        text-align: center;
+    }
+    .right {
+        text-align: right;
+    }
+    .padded {
+        padding: 0 4rem;
+    }
 </style>
