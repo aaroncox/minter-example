@@ -256,15 +256,6 @@
         <h1>RAMS Minter</h1>
         <h1>A better minter for ramseos.io</h1>
     </hgroup>
-    <p>
-        <strong>Disclaimer</strong>: This app is not an endorsement of the inscription event or of
-        ramseos.io. This app was built to offer more inclusive options for participation and to
-        serve as an example of how to better build these apps. It is however a fully functional app
-        that can be used to participate in the inscription event and was built using the new
-        <a href="https://wharfkit.com">Wharf SDKs</a>. Source code is
-        <a href="https://github.com/aaroncox/minter-example">here</a>.
-    </p>
-    <p>Use this app to create inscriptions at your own risk.</p>
 </header>
 
 <main>
@@ -412,6 +403,18 @@
         <button on:click={login}>Login</button>
     {/if}
 </main>
+
+<header>
+    <p>
+        <strong>Disclaimer</strong>: This app is not an endorsement of the inscription event or of
+        ramseos.io. This app was built to offer more inclusive options for participation and to
+        serve as an example of how to better build these apps. It is however a fully functional app
+        that can be used to participate in the inscription event and was built using the new
+        <a href="https://wharfkit.com">Wharf SDKs</a>. Source code is
+        <a href="https://github.com/aaroncox/minter-example">here</a>.
+    </p>
+    <p>Use this app to create inscriptions at your own risk.</p>
+</header>
 
 <style>
     .center {
