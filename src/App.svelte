@@ -35,10 +35,12 @@
     const minting: Writable<boolean> = writable(false)
     const lastMintId: Writable<string> = writable()
     const lastMintTime: Writable<string> = writable()
+    const lastMintError: Writable<string> = writable()
 
     onMount(async () => {
         await restore()
         await fetchAccount()
+        await loadMints()
         const key = localStorage.getItem('sessionKey')
         if (key) {
             sessionKey.set(PrivateKey.from(key))
@@ -124,31 +126,36 @@
     async function mint() {
         if ($session) {
             let result
-            if ($localSession) {
-                result = await $localSession.transact({
-                    action: {
-                        account: mintContract,
-                        name: mintAction,
-                        authorization: [$localSession?.permissionLevel],
-                        data: {
-                            from: $localSession.actor,
-                            memo: JSON.stringify(mintMemo),
+            try {
+                if ($localSession) {
+                    result = await $localSession.transact({
+                        action: {
+                            account: mintContract,
+                            name: mintAction,
+                            authorization: [$localSession?.permissionLevel],
+                            data: {
+                                from: $localSession.actor,
+                                memo: JSON.stringify(mintMemo),
+                            },
                         },
-                    },
-                })
-            } else {
-                result = await $session.transact({
-                    action: {
-                        account: mintContract,
-                        name: mintAction,
-                        authorization: [$session?.permissionLevel],
-                        data: {
-                            from: $session.actor,
-                            memo: JSON.stringify(mintMemo),
+                    })
+                } else {
+                    result = await $session.transact({
+                        action: {
+                            account: mintContract,
+                            name: mintAction,
+                            authorization: [$session?.permissionLevel],
+                            data: {
+                                from: $session.actor,
+                                memo: JSON.stringify(mintMemo),
+                            },
                         },
-                    },
-                })
+                    })
+                }
+            } catch (e) {
+                lastMintError.set(String(e))
             }
+            lastMintError.set('')
             if (result && result.response) {
                 lastMintId.set(result.response.transaction_id)
                 lastMintTime.set(result.response.processed.block_time)
@@ -302,18 +309,27 @@
                             {/if}
                         {/if}
                         <div>
-                            <hgroup>
-                                <h6>
-                                    {#if $lastMintTime}
-                                        Successfully minted @ {$lastMintTime}
-                                    {/if}
-                                </h6>
-                                <h6>
-                                    {#if $lastMintId}
-                                        {$lastMintId}
-                                    {/if}
-                                </h6>
-                            </hgroup>
+                            {#if $lastMintError}
+                                <hgroup class="red">
+                                    <h6>Error</h6>
+                                    <h6>
+                                        {$lastMintError}
+                                    </h6>
+                                </hgroup>
+                            {:else}
+                                <hgroup>
+                                    <h6>
+                                        {#if $lastMintTime}
+                                            Successfully minted @ {$lastMintTime}
+                                        {/if}
+                                    </h6>
+                                    <h6>
+                                        {#if $lastMintId}
+                                            {$lastMintId}
+                                        {/if}
+                                    </h6>
+                                </hgroup>
+                            {/if}
                         </div>
                     {:else}
                         <hgroup>
@@ -406,5 +422,8 @@
     }
     .padded {
         padding: 0 4rem;
+    }
+    .red * {
+        color: red;
     }
 </style>
