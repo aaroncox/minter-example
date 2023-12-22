@@ -6,8 +6,8 @@
     import {Asset, PrivateKey, Session} from '@wharfkit/session'
     import {WalletPluginPrivateKey} from '@wharfkit/wallet-plugin-privatekey'
 
-    const mintContract = ''
-    const mintAction = ''
+    const mintContract = 'rams.eos'
+    const mintAction = 'mint'
     const mintMemo = {p: 'eirc-20', op: 'mint', tick: 'rams', amt: 10}
 
     let account: Writable<Account | undefined> = writable()
@@ -69,16 +69,17 @@
             if (accountMints && accountMints.rows && accountMints.rows[0]) {
                 balance.set(accountMints.rows[0].mintcount)
             }
+            console.log(accountMints.rows[0])
             const totalMints = await $session.client.v1.chain.get_table_rows({
                 json: true,
                 limit: 1,
                 code: mintContract,
                 scope: mintContract,
-                table: 'mints',
+                table: 'status',
                 reverse: true,
             })
             if (totalMints && totalMints.rows && totalMints.rows[0]) {
-                current.set(totalMints.rows[0].id)
+                current.set(totalMints.rows[0].minted)
             }
         }
     }
@@ -283,7 +284,7 @@
                 <div>
                     <p>
                         Mint EIRC20 using the controls below. Each mint transaction will consume CPU
-                        and RAM to perform 10x mint actions.
+                        and RAM to perform the mint actions.
                     </p>
 
                     {#if mintContract}
