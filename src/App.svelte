@@ -127,30 +127,42 @@
         if ($session) {
             let result
             try {
+                // Random expiration seconds to help prevent duplicate transactions
+                const expireSeconds = Math.floor(Math.random() * (600 - 60 + 1)) + 60
                 if ($localSession) {
-                    result = await $localSession.transact({
-                        action: {
-                            account: mintContract,
-                            name: mintAction,
-                            authorization: [$localSession?.permissionLevel],
-                            data: {
-                                from: $localSession.actor,
-                                memo: JSON.stringify(mintMemo),
+                    result = await $localSession.transact(
+                        {
+                            action: {
+                                account: mintContract,
+                                name: mintAction,
+                                authorization: [$localSession?.permissionLevel],
+                                data: {
+                                    from: $localSession.actor,
+                                    memo: JSON.stringify(mintMemo),
+                                },
                             },
                         },
-                    })
+                        {
+                            expireSeconds,
+                        }
+                    )
                 } else {
-                    result = await $session.transact({
-                        action: {
-                            account: mintContract,
-                            name: mintAction,
-                            authorization: [$session?.permissionLevel],
-                            data: {
-                                from: $session.actor,
-                                memo: JSON.stringify(mintMemo),
+                    result = await $session.transact(
+                        {
+                            action: {
+                                account: mintContract,
+                                name: mintAction,
+                                authorization: [$session?.permissionLevel],
+                                data: {
+                                    from: $session.actor,
+                                    memo: JSON.stringify(mintMemo),
+                                },
                             },
                         },
-                    })
+                        {
+                            expireSeconds,
+                        }
+                    )
                 }
             } catch (e) {
                 lastMintError.set(String(e))
