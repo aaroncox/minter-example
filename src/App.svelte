@@ -3,7 +3,7 @@
     import {accountKit, contractKit, login, logout, restore, session} from './wharf'
     import {type Writable, writable, derived, type Readable} from 'svelte/store'
     import {type Account} from '@wharfkit/account'
-    import {Asset, PrivateKey, Session, WalletPluginMetadata} from '@wharfkit/session'
+    import {Asset, PrivateKey, Session} from '@wharfkit/session'
     import {WalletPluginPrivateKey} from '@wharfkit/wallet-plugin-privatekey'
 
     const mintContract = ''
@@ -33,6 +33,8 @@
     const maximum = 1000000000
 
     const minting: Writable<boolean> = writable(false)
+    const lastMintId: Writable<string> = writable()
+    const lastMintTime: Writable<string> = writable()
 
     onMount(async () => {
         await restore()
@@ -49,12 +51,12 @@
         }
     }
 
-    setTimeout(fetchAccount, 5000)
     setInterval(autoMint, 1000)
     setInterval(loadMints, 3000)
+    setInterval(fetchAccount, 5000)
 
     async function loadMints() {
-        if ($session) {
+        if ($session && mintContract) {
             const accountMints = await $session.client.v1.chain.get_table_rows({
                 json: true,
                 limit: 1,
@@ -121,8 +123,9 @@
 
     async function mint() {
         if ($session) {
+            let result
             if ($localSession) {
-                await $localSession.transact({
+                result = await $localSession.transact({
                     action: {
                         account: mintContract,
                         name: mintAction,
@@ -134,7 +137,7 @@
                     },
                 })
             } else {
-                await $session.transact({
+                result = await $session.transact({
                     action: {
                         account: mintContract,
                         name: mintAction,
@@ -145,6 +148,10 @@
                         },
                     },
                 })
+            }
+            if (result && result.response) {
+                lastMintId.set(result.response.transaction_id)
+                lastMintTime.set(result.response.processed.block_time)
             }
         }
     }
@@ -286,6 +293,20 @@
                                     </p>
                                 {/if}
                             {/if}
+                            <div>
+                                <hgroup>
+                                    <h6>
+                                        {#if $lastMintTime}
+                                            Successfully minted @ {$lastMintTime}
+                                        {/if}
+                                    </h6>
+                                    <h6>
+                                        {#if $lastMintId}
+                                            {$lastMintId}
+                                        {/if}
+                                    </h6>
+                                </hgroup>
+                            </div>
                         {:else}
                             <hgroup>
                                 <h3>Disabled</h3>
