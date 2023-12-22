@@ -100,8 +100,8 @@
             const state = await resources.v1.powerup.get_state()
             const sample = await resources.getSampledUsage()
             // CPU
-            const cpu_price = state.cpu.price_per(sample, 10000)
-            const cpu_frac = state.cpu.frac(sample, 10000)
+            const cpu_price = state.cpu.price_per(sample, 100000)
+            const cpu_frac = state.cpu.frac(sample, 100000)
             // NET
             const net_price = state.net.price_per(sample, 10000)
             const net_frac = state.net.frac(sample, 10000)
@@ -369,7 +369,8 @@
                                     </hgroup>
                                 </div>
                                 <div>
-                                    <button class="outline" on:click={powerup}>Powerup 10ms</button>
+                                    <button class="outline" on:click={powerup}>Powerup 100ms</button
+                                    >
                                 </div>
                             </div>
                             <div class="grid">
