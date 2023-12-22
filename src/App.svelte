@@ -69,7 +69,6 @@
             if (accountMints && accountMints.rows && accountMints.rows[0]) {
                 balance.set(accountMints.rows[0].mintcount)
             }
-            console.log(accountMints.rows[0])
             const totalMints = await $session.client.v1.chain.get_table_rows({
                 json: true,
                 limit: 1,
