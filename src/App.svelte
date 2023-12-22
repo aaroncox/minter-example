@@ -103,8 +103,8 @@
             const cpu_price = state.cpu.price_per(sample, 100000)
             const cpu_frac = state.cpu.frac(sample, 100000)
             // NET
-            const net_price = state.net.price_per(sample, 10000)
-            const net_frac = state.net.frac(sample, 10000)
+            const net_price = state.net.price_per(sample, 100000)
+            const net_frac = state.net.frac(sample, 100000)
 
             const max_payment = Asset.from(Number(cpu_price) + Number(net_price), '4,EOS')
 
