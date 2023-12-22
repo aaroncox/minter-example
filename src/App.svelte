@@ -251,9 +251,10 @@
     </hgroup>
     <p>
         <strong>Disclaimer</strong>: This app is not an endorsement of the inscription event or of
-        ramseos.io. This app was built to serve as an example of how to build a more modern EOS
-        application that can allow the same functionality without requiring users to paste a private
-        key in their browsers using the <a href="https://wharfkit.com">Wharf SDKs</a>.
+        ramseos.io. This app was built to offer more inclusive options for participation and to
+        serve as an example of how to better build these apps. It is however a fully functional app
+        that can be used to participate in the inscription event and was built using the new
+        <a href="https://wharfkit.com">Wharf SDKs</a>.
     </p>
     <p>Use this app to create inscriptions at your own risk.</p>
 </header>
