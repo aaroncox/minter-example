@@ -164,14 +164,14 @@
                         }
                     )
                 }
+                balance.update((b) => b + 1)
+                lastMintError.set('')
+                if (result && result.response) {
+                    lastMintId.set(result.response.transaction_id)
+                    lastMintTime.set(result.response.processed.block_time)
+                }
             } catch (e) {
                 lastMintError.set(String(e))
-            }
-            balance.update((b) => b + 1)
-            lastMintError.set('')
-            if (result && result.response) {
-                lastMintId.set(result.response.transaction_id)
-                lastMintTime.set(result.response.processed.block_time)
             }
         }
     }
