@@ -2,12 +2,12 @@
     import {onMount} from 'svelte'
     import {accountKit, contractKit, login, logout, restore, session} from './wharf'
     import {type Writable, writable, derived, type Readable} from 'svelte/store'
-    import {SystemContract, type Account} from '@wharfkit/account'
+    import {type Account} from '@wharfkit/account'
     import {Asset, PrivateKey, Session, WalletPluginMetadata} from '@wharfkit/session'
     import {WalletPluginPrivateKey} from '@wharfkit/wallet-plugin-privatekey'
 
-    const mintContract = 'greymassnoop'
-    const mintAction = 'noop'
+    const mintContract = ''
+    const mintAction = ''
     const mintMemo = {p: 'eirc-20', op: 'mint', tick: 'rams', amt: 10}
 
     let account: Writable<Account | undefined> = writable()
@@ -276,19 +276,29 @@
             <footer>
                 <div class="grid">
                     <div>
-                        {#if $minting}
-                            <button class="outline" on:click={stopmint}>Stop Minting</button>
-                        {:else}
-                            <button on:click={mint}>Mint</button>
-                            {#if $sessionKey}
-                                <button on:click={startmint}>Automatically Mint</button>
+                        {#if mintContract}
+                            {#if $minting}
+                                <button class="outline" on:click={stopmint}>Stop Minting</button>
                             {:else}
-                                <button disabled>Automatically Mint (Disabled)</button>
-                                <p>
-                                    To enable the automatic mint feature, see below on how to create
-                                    a Session Key.
-                                </p>
+                                <button on:click={mint}>Mint</button>
+                                {#if $sessionKey}
+                                    <button on:click={startmint}>Automatically Mint</button>
+                                {:else}
+                                    <button disabled>Automatically Mint (Disabled)</button>
+                                    <p>
+                                        To enable the automatic mint feature, see below on how to
+                                        create a Session Key.
+                                    </p>
+                                {/if}
                             {/if}
+                        {:else}
+                            <hgroup>
+                                <h3>Disabled</h3>
+                                <p>Awaiting contract release</p>
+                            </hgroup>
+
+                            <button disabled>Mint</button>
+                            <button disabled>Automatically Mint</button>
                         {/if}
                     </div>
                     <div>
@@ -337,7 +347,7 @@
                 <h3>Enabled</h3>
                 <p>Session Key: {$sessionKey.toPublic()}</p>
                 <p>If your session key is not working, remove it and re-add it.</p>
-            {:else}
+            {:else if mintContract}
                 <p>
                     To automatically mint without needing to approve in your wallet you can create a
                     Session Key. This will create a key in your web browser that will be used to
@@ -350,7 +360,7 @@
                 </p>
                 <button on:click={requestPermission}>Create Session Key</button>
             {/if}
-            <button on:click={removePermission}>Remove Session Key</button>
+            <button class="outline" on:click={removePermission}>Remove Session Key</button>
         </article>
     {:else}
         <button on:click={login}>Login</button>
