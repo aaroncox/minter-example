@@ -172,6 +172,7 @@
                 }
             } catch (e) {
                 lastMintError.set(String(e))
+                minting.set(false)
             }
         }
     }
