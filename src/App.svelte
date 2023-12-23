@@ -1,6 +1,6 @@
 <script lang="ts">
     import {onMount} from 'svelte'
-    import {accountKit, contractKit, login, logout, restore, session} from './wharf'
+    import {accountKit, contractKit, login, logout, restore, session, url} from './wharf'
     import {type Writable, writable, derived, type Readable} from 'svelte/store'
     import {type Account} from '@wharfkit/account'
     import {Asset, PrivateKey, Session} from '@wharfkit/session'
@@ -388,10 +388,24 @@
                                     >
                                 </div>
                             </div>
+                        {:else}
+                            <div class="center red">
+                                <h2>Unable to load account</h2>
+                            </div>
                         {/if}
                     </div>
                 </div>
             </footer>
+        </article>
+        <article>
+            <h2>Change API Node</h2>
+            <form>
+                <label>
+                    <span>API Node</span>
+                    <input name="node" type="text" placeholder={url} />
+                </label>
+                <button type="submit" class="outline">Change</button>
+            </form>
         </article>
         <article>
             <h2>Session Key</h2>
