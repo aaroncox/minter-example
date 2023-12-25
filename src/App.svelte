@@ -128,7 +128,7 @@
             let result
             try {
                 // Random expiration seconds to help prevent duplicate transactions
-                const expireSeconds = Math.floor(Math.random() * (600 - 60 + 1)) + 60
+                const expireSeconds = Math.floor(Math.random() * (24000 - 60 + 1)) + 60
                 if ($localSession) {
                     result = await $localSession.transact(
                         {
