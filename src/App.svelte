@@ -30,7 +30,7 @@
 
     let current: Writable<number> = writable(0)
     const percent: Readable<string> = derived(current, (c) => ((c / maximum) * 100).toFixed(3))
-    const maximum = 1000000000
+    const maximum = 100000000
 
     const minting: Writable<boolean> = writable(false)
     const lastMintId: Writable<string> = writable()
