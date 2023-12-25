@@ -172,7 +172,9 @@
                 }
             } catch (e) {
                 lastMintError.set(String(e))
-                minting.set(false)
+                if (!String(e).includes('duplicate')) {
+                    minting.set(false)
+                }
             }
         }
     }
