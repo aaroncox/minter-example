@@ -132,15 +132,17 @@
                 if ($localSession) {
                     result = await $localSession.transact(
                         {
-                            action: {
-                                account: mintContract,
-                                name: mintAction,
-                                authorization: [$localSession?.permissionLevel],
-                                data: {
-                                    from: $localSession.actor,
-                                    memo: JSON.stringify(mintMemo),
-                                },
-                            },
+                            actions: [...Array(quantity)].map(() => {
+                                return {
+                                    account: mintContract,
+                                    name: mintAction,
+                                    authorization: [$localSession?.permissionLevel],
+                                    data: {
+                                        from: $localSession.actor,
+                                        memo: JSON.stringify(mintMemo),
+                                    },
+                                }
+                            }),
                         },
                         {
                             expireSeconds,
@@ -149,22 +151,24 @@
                 } else {
                     result = await $session.transact(
                         {
-                            action: {
-                                account: mintContract,
-                                name: mintAction,
-                                authorization: [$session?.permissionLevel],
-                                data: {
-                                    from: $session.actor,
-                                    memo: JSON.stringify(mintMemo),
-                                },
-                            },
+                            actions: [...Array(quantity)].map(() => {
+                                return {
+                                    account: mintContract,
+                                    name: mintAction,
+                                    authorization: [$session?.permissionLevel],
+                                    data: {
+                                        from: $session.actor,
+                                        memo: JSON.stringify(mintMemo),
+                                    },
+                                }
+                            }),
                         },
                         {
                             expireSeconds,
                         }
                     )
                 }
-                balance.update((b) => b + 1)
+                balance.update((b) => b + quantity)
                 lastMintError.set('')
                 if (result && result.response) {
                     lastMintId.set(result.response.transaction_id)
@@ -191,6 +195,12 @@
 
     function stopmint() {
         minting.set(false)
+    }
+
+    let quantity = 1
+
+    function changeQuantity(e) {
+        quantity = Number(e.target.value)
     }
 
     async function requestPermission() {
@@ -300,6 +310,12 @@
                         and RAM to perform the mint actions.
                     </p>
 
+                    <select on:change={changeQuantity}>
+                        <option value="1">1x Mints</option>
+                        <option value="10">10x Mints</option>
+                        <option value="100">100x Mints</option>
+                        <option value="1000">1000x Mints</option>
+                    </select>
                     {#if mintContract}
                         {#if $minting}
                             <button class="outline" on:click={stopmint}>Stop Minting</button>
